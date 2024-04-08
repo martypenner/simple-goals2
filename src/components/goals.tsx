@@ -40,13 +40,13 @@ export function Goals() {
                 <div className="flex items-center gap-2">
                   <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Started on 23rd March, 2024
+                    Started on {new Date(goal.createdAt).toDateString()}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Deadline: 30th June, 2024
+                    Deadline: {new Date(goal.endDate).toDateString()}
                   </span>
                 </div>
               </div>
@@ -57,7 +57,7 @@ export function Goals() {
                   onClick={() => r.mutate.updateGoalProgress(goal.id)}
                 >
                   <Plus className="h-3 w-3 mr-2" />
-                  Progress
+                  Mark progress
                 </Button>
                 {/* <Button variant="outline"> */}
                 {/*   <ChevronDownIcon className="h-3 w-3 mr-2" /> */}
@@ -73,7 +73,7 @@ export function Goals() {
 
         <Separator className="mt-6 mb-2" />
 
-        <h2 className="text-xl font-bold">Completed Goals</h2>
+        <h2 className="text-xl font-bold text-primary">Completed Goals</h2>
 
         {completedGoals.map((goal) => (
           <Card key={goal.id}>
@@ -84,8 +84,7 @@ export function Goals() {
                 </CardTitle>
                 {goal.completedAt && (
                   <Badge className="text-sm" variant="default">
-                    Completed on{' '}
-                    {new Date(goal.completedAt).toLocaleDateString()}
+                    Completed on {new Date(goal.completedAt).toDateString()}
                   </Badge>
                 )}
               </div>
@@ -96,13 +95,13 @@ export function Goals() {
                 <div className="flex items-center gap-2">
                   <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Started on 23rd March, 2024
+                    Started on {new Date(goal.createdAt).toDateString()}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Deadline: 30th June, 2024
+                    Deadline: {new Date(goal.endDate).toDateString()}
                   </span>
                 </div>
               </div>
