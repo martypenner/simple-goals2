@@ -5,6 +5,17 @@ import { r } from './reflect';
 
 import './globals.css';
 
+// r.mutate.addGoal({
+//   id: nanoid(),
+//   progress: 30,
+//   title: 'Write a novel',
+//   description: `I've always had a story to tell, and now I'm finally putting it on paper.`,
+//   createdAt: new Date('March 23, 2024').valueOf(),
+//   updatedAt: new Date('March 23, 2024').valueOf(),
+//   completedAt: new Date('June 12, 2024').valueOf(),
+//   endDate: new Date('March 23, 2025').valueOf(),
+// });
+
 function App() {
   return <Goals />;
 }

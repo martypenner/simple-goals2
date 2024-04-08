@@ -6,22 +6,11 @@ import { r } from '@/reflect';
 import { useCompletedGoals, useUnfinishedGoals } from '@/subscriptions';
 import { Plus } from 'lucide-react';
 import { SVGAttributes } from 'react';
+import { Separator } from './ui/separator';
 
 export function Goals() {
   const unfinishedGoals = useUnfinishedGoals(r);
   const completedGoals = useCompletedGoals(r);
-
-  // useEffect(() => {
-  //   r.mutate.addGoal({
-  //     id: nanoid(),
-  //     progress: 30,
-  //     title: 'Write a novel',
-  //     description: `I've always had a story to tell, and now I'm finally putting it on paper.`,
-  //     createdAt: new Date('March 23, 2024').valueOf(),
-  //     updatedAt: new Date('March 23, 2024').valueOf(),
-  //     endDate: new Date('March 23, 2025').valueOf(),
-  //   });
-  // }, []);
 
   return (
     <div className="grid gap-4 w-full max-w-3xl p-4 rounded-lg border border-gray-200 shadow-lg md:gap-8 md:p-10">
@@ -81,6 +70,11 @@ export function Goals() {
             </CardContent>
           </Card>
         ))}
+
+        <Separator className="mt-6 mb-2" />
+
+        <h2 className="text-xl font-bold">Completed Goals</h2>
+
         {completedGoals.map((goal) => (
           <Card key={goal.id}>
             <CardContent className="flex flex-col gap-2">
@@ -88,9 +82,12 @@ export function Goals() {
                 <CardTitle className="text-xl font-bold">
                   {goal.title}
                 </CardTitle>
-                <Badge className="text-sm" variant="default">
-                  Completed
-                </Badge>
+                {goal.completedAt && (
+                  <Badge className="text-sm" variant="default">
+                    Completed on{' '}
+                    {new Date(goal.completedAt).toLocaleDateString()}
+                  </Badge>
+                )}
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {goal.description}

@@ -19,7 +19,7 @@ export function useUnfinishedGoals(r: Reflect<Mutators>): Goal[] {
     r,
     async (tx) => {
       const goals = await listGoals(tx);
-      return goals.filter((goal) => goal.progress < 100);
+      return goals.filter((goal) => goal.completedAt == null);
     },
     [],
   );
@@ -30,7 +30,7 @@ export function useCompletedGoals(r: Reflect<Mutators>): Goal[] {
     r,
     async (tx) => {
       const goals = await listGoals(tx);
-      return goals.filter((goal) => goal.progress === 100);
+      return goals.filter((goal) => goal.completedAt != null);
     },
     [],
   );

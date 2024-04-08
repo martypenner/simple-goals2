@@ -5,6 +5,7 @@ export type Goal = Entity & {
   description: string;
   createdAt: number;
   updatedAt: number;
+  completedAt?: number;
   endDate: number;
   progress: number;
 };
