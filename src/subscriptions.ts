@@ -11,9 +11,27 @@
 
 import type { Reflect } from '@rocicorp/reflect/client';
 import { useSubscribe } from '@rocicorp/reflect/react';
-import { listGoals } from './client-state';
+import { type Goal, listGoals } from './client-state';
 import type { Mutators } from './mutators';
 
-export function useGoals(r: Reflect<Mutators>) {
-  return useSubscribe(r, (tx) => listGoals(tx), null);
+export function useUnfinishedGoals(r: Reflect<Mutators>): Goal[] {
+  return useSubscribe(
+    r,
+    async (tx) => {
+      const goals = await listGoals(tx);
+      return goals.filter((goal) => goal.progress < 100);
+    },
+    [],
+  );
+}
+
+export function useCompletedGoals(r: Reflect<Mutators>): Goal[] {
+  return useSubscribe(
+    r,
+    async (tx) => {
+      const goals = await listGoals(tx);
+      return goals.filter((goal) => goal.progress === 100);
+    },
+    [],
+  );
 }

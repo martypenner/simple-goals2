@@ -1,27 +1,9 @@
 import { Goals } from '@/components/goals';
-import { Reflect } from '@rocicorp/reflect/client';
-import { nanoid } from 'nanoid';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { mutators } from './mutators';
+import { r } from './reflect';
 
 import './globals.css';
-
-const userID = nanoid();
-const roomID = 'my-room';
-
-const server: string | undefined = import.meta.env.VITE_REFLECT_URL;
-if (!server) {
-  throw new Error('VITE_REFLECT_URL required');
-}
-
-const r = new Reflect({
-  server,
-  userID,
-  roomID,
-  auth: userID,
-  mutators,
-});
 
 function App() {
   return <Goals />;

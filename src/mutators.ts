@@ -16,12 +16,27 @@
 // thing. The Reflect sync protocol ensures that the server-side result takes
 // precedence over the client-side optimistic result.
 
-import type { MutatorDefs } from '@rocicorp/reflect';
-import { addGoal, removeGoal } from './client-state';
+import type { MutatorDefs, WriteTransaction } from '@rocicorp/reflect';
+import {
+  Goal,
+  addGoal,
+  mustGetGoal,
+  removeGoal,
+  updateGoal,
+} from './client-state';
 
 export const mutators = {
   addGoal,
   removeGoal,
+  updateGoalProgress,
 } satisfies MutatorDefs;
 
 export type Mutators = typeof mutators;
+
+export async function updateGoalProgress(tx: WriteTransaction, id: Goal['id']) {
+  const goal = await mustGetGoal(tx, id);
+  return await updateGoal(tx, {
+    id,
+    progress: Math.min(goal.progress + 1, 100),
+  });
+}

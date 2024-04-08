@@ -6,9 +6,15 @@ export type Goal = Entity & {
   createdAt: number;
   updatedAt: number;
   endDate: number;
-  completed: boolean;
+  progress: number;
 };
 
-export { listGoals, removeGoal, addGoal };
+export { mustGetGoal, listGoals, removeGoal, addGoal, updateGoal };
 
-const { list: listGoals, delete: removeGoal, set: addGoal } = generate('goal');
+const {
+  mustGet: mustGetGoal,
+  list: listGoals,
+  delete: removeGoal,
+  set: addGoal,
+  update: updateGoal,
+} = generate<Goal>('goal');
