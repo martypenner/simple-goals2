@@ -106,7 +106,7 @@ export function Goals() {
                 </div>
               </div>
               <div className="w-full mt-2">
-                <Progress value={goal.progress} />
+                <Progress value={100} />
               </div>
             </CardContent>
           </Card>

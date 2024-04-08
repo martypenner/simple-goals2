@@ -43,7 +43,7 @@ const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
     const id = nanoid();
     await tx.set(`goal/${id}`, {
       id: id,
-      progress: 30,
+      progress: 100,
       title: 'Be awesome',
       description: `Finishing goals rules!`,
       createdAt: new Date('March 23, 2024').valueOf(),
