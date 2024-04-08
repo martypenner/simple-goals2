@@ -1,16 +1,14 @@
+import { Goals } from '@/components/goals';
 import { Reflect } from '@rocicorp/reflect/client';
 import { nanoid } from 'nanoid';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { randUserInfo } from './client-state.js';
-import CursorField from './cursor-field.js';
-import styles from './index.module.css';
-import { mutators } from './mutators.js';
-import { useCount } from './subscriptions.js';
+import { mutators } from './mutators';
+
+import './globals.css';
 
 const userID = nanoid();
 const roomID = 'my-room';
-const incrementKey = 'count';
 
 const server: string | undefined = import.meta.env.VITE_REFLECT_URL;
 if (!server) {
@@ -26,30 +24,7 @@ const r = new Reflect({
 });
 
 function App() {
-  useEffect(() => {
-    void (async () => {
-      const userInfo = randUserInfo();
-      await r.mutate.initClientState(userInfo);
-    })();
-  }, []);
-
-  const handleButtonClick = () => {
-    void r.mutate.increment({ key: incrementKey, delta: 1 });
-  };
-
-  const count = useCount(r, incrementKey);
-
-  // Render app.
-  return (
-    <div className={styles.container}>
-      <img className={styles.logo} src="/reflect.svg" />
-      <div className={styles.content}>
-        <div className={styles.count}>{count}</div>
-        <button onClick={handleButtonClick}>Bonk</button>
-        <CursorField r={r} />
-      </div>
-    </div>
-  );
+  return <Goals />;
 }
 
 const rootElement = document.getElementById('root');

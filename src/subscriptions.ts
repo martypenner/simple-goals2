@@ -11,13 +11,9 @@
 
 import type { Reflect } from '@rocicorp/reflect/client';
 import { useSubscribe } from '@rocicorp/reflect/react';
-import { getClientState } from './client-state.js';
-import type { M } from './mutators.js';
+import { listGoals } from './client-state';
+import type { Mutators } from './mutators';
 
-export function useCount(reflect: Reflect<M>, key: string) {
-  return useSubscribe(reflect, (tx) => tx.get<number>(key), 0);
-}
-
-export function useClientState(r: Reflect<M>, id: string) {
-  return useSubscribe(r, (tx) => getClientState(tx, id), null);
+export function useGoals(r: Reflect<Mutators>) {
+  return useSubscribe(r, (tx) => listGoals(tx), null);
 }
