@@ -1,8 +1,10 @@
+import { WriteTransaction } from '@rocicorp/reflect';
 import type {
   AuthHandler,
   ReflectServerOptions,
 } from '@rocicorp/reflect/server';
-import { M, mutators } from '../src/mutators.js';
+import { nanoid } from 'nanoid';
+import { Mutators, mutators } from '../src/mutators';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const authHandler: AuthHandler = (auth: string, _roomID: string) => {
@@ -21,10 +23,41 @@ const authHandler: AuthHandler = (auth: string, _roomID: string) => {
   return null;
 };
 
-function makeOptions(): ReflectServerOptions<M> {
+const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
+  async (tx: WriteTransaction) => {
+    if (!(await tx.isEmpty())) return;
+
+    if (process.env.NODE_ENV === 'development') {
+      const id = nanoid();
+      await tx.set(`goal/${id}`, {
+        id: id,
+        progress: 30,
+        title: 'Write a poem',
+        description: `I've always had a story to tell, and now I'm finally putting it on paper.`,
+        createdAt: new Date('March 23, 2024').valueOf(),
+        updatedAt: new Date('March 23, 2024').valueOf(),
+        endDate: new Date('March 23, 2025').valueOf(),
+      });
+    }
+
+    const id = nanoid();
+    await tx.set(`goal/${id}`, {
+      id: id,
+      progress: 30,
+      title: 'Be awesome',
+      description: `Finishing goals rules!`,
+      createdAt: new Date('March 23, 2024').valueOf(),
+      updatedAt: new Date('March 23, 2024').valueOf(),
+      completedAt: new Date('June 12, 2024').valueOf(),
+      endDate: new Date('March 23, 2025').valueOf(),
+    });
+  };
+
+function makeOptions(): ReflectServerOptions<Mutators> {
   return {
     mutators,
     authHandler,
+    roomStartHandler,
   };
 }
 
