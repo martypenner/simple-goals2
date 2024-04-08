@@ -15,4 +15,5 @@ export const r = new Reflect({
   roomID,
   auth: userID,
   mutators,
+  kvStore: 'idb',
 });
