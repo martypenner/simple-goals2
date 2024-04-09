@@ -4,6 +4,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { r } from '@/reflect';
 import { useCompletedGoals, useUnfinishedGoals } from '@/subscriptions';
+import confetti from 'canvas-confetti';
 import { Plus } from 'lucide-react';
 import { SVGAttributes } from 'react';
 import { Separator } from './ui/separator';
@@ -54,7 +55,13 @@ export function Goals() {
                 <Button
                   variant="outline"
                   className="flex items-center justify-center"
-                  onClick={() => r.mutate.updateGoalProgress(goal.id)}
+                  onClick={() => {
+                    r.mutate.updateGoalProgress(goal.id);
+                    // Next tick will be 100
+                    if (goal.progress === 99) {
+                      showConfetti();
+                    }
+                  }}
                 >
                   <Plus className="h-3 w-3 mr-2" />
                   Mark progress
@@ -159,4 +166,46 @@ function CalendarIcon(props: SVGAttributes<SVGSVGElement>) {
       <line x1="3" x2="21" y1="10" y2="10" />
     </svg>
   );
+}
+
+function showConfetti() {
+  const duration = 3 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = {
+    startVelocity: 30,
+    spread: 360,
+    ticks: 240,
+    zIndex: 0,
+  };
+
+  function randomInRange(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval: NodeJS.Timeout = setInterval(function () {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+    // since particles fall down, start a bit higher than random
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: {
+        x: randomInRange(0.1, 0.3),
+        y: Math.random() - 0.2,
+      },
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: {
+        x: randomInRange(0.7, 0.9),
+        y: Math.random() - 0.2,
+      },
+    });
+  }, 250);
 }
