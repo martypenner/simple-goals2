@@ -1,3 +1,4 @@
+import { Goal } from '@/client-state';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -5,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { r } from '@/reflect';
 import { useCompletedGoals, useUnfinishedGoals } from '@/subscriptions';
 import confetti from 'canvas-confetti';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import React, { SVGAttributes } from 'react';
 import { SetGoal } from './set-goal';
 import { Separator } from './ui/separator';
@@ -41,19 +42,23 @@ export function Goals() {
         {unfinishedGoals.map((goal) => (
           <Card key={goal.id}>
             <CardContent className="flex flex-col gap-2">
-              <div className="flex flex-row items-end gap-2">
-                <CardTitle className="text-xl font-bold">
-                  {goal.title}
-                </CardTitle>
-                {goal.progress === 0 ? (
-                  <Badge className="text-sm" variant="secondary">
-                    Not started
-                  </Badge>
-                ) : (
-                  <Badge className="text-sm" variant="outline">
-                    In progress
-                  </Badge>
-                )}
+              <div className="flex flex-row items-end justify-between gap-2">
+                <div>
+                  <CardTitle className="text-xl font-bold">
+                    {goal.title}
+                  </CardTitle>
+                  {goal.progress === 0 ? (
+                    <Badge className="text-sm" variant="secondary">
+                      Not started
+                    </Badge>
+                  ) : (
+                    <Badge className="text-sm" variant="outline">
+                      In progress
+                    </Badge>
+                  )}
+                </div>
+
+                <DeleteButton goal={goal} />
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {goal.description}
@@ -106,15 +111,19 @@ export function Goals() {
         {completedGoals.map((goal) => (
           <Card key={goal.id}>
             <CardContent className="flex flex-col gap-2">
-              <div className="flex flex-row items-end gap-2">
-                <CardTitle className="text-xl font-bold">
-                  {goal.title}
-                </CardTitle>
-                {goal.completedAt && (
-                  <Badge className="text-sm" variant="default">
-                    Completed on {new Date(goal.completedAt).toDateString()}
-                  </Badge>
-                )}
+              <div className="flex flex-row items-end justify-between gap-2">
+                <div>
+                  <CardTitle className="text-xl font-bold">
+                    {goal.title}
+                  </CardTitle>
+                  {goal.completedAt && (
+                    <Badge className="text-sm" variant="default">
+                      Completed on {new Date(goal.completedAt).toDateString()}
+                    </Badge>
+                  )}
+                </div>
+
+                <DeleteButton goal={goal} />
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {goal.description}
@@ -229,4 +238,24 @@ function showConfetti() {
       },
     });
   }, 250);
+}
+
+function DeleteButton({ goal }: { goal: Goal }) {
+  return (
+    <Button
+      variant="outline"
+      onClick={() => {
+        if (
+          window.confirm(
+            'Are you sure you want to remove this goal? This action cannot be undone.',
+          )
+        ) {
+          r.mutate.removeGoal(goal.id);
+        }
+      }}
+    >
+      <span className="sr-only">Show form</span>
+      <Trash2 className="h-3 w-3" />
+    </Button>
+  );
 }
