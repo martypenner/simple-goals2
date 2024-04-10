@@ -39,115 +39,123 @@ export function Goals() {
       {showCreate && <SetGoal onCreateGoal={() => setShowCreate(false)} />}
 
       <div className="grid gap-4">
-        {unfinishedGoals.map((goal) => (
-          <Card key={goal.id}>
-            <CardContent className="flex flex-col gap-2">
-              <div className="flex flex-row items-end justify-between gap-2">
-                <div>
-                  <CardTitle className="text-xl font-bold">
-                    {goal.title}
-                  </CardTitle>
-                  {goal.progress === 0 ? (
-                    <Badge className="text-sm" variant="secondary">
-                      Not started
-                    </Badge>
-                  ) : (
-                    <Badge className="text-sm" variant="outline">
-                      In progress
-                    </Badge>
-                  )}
-                </div>
+        {unfinishedGoals.length === 0 ? (
+          <h4 className="text-md">You haven't created any goals yet!</h4>
+        ) : (
+          unfinishedGoals.map((goal) => (
+            <Card key={goal.id}>
+              <CardContent className="flex flex-col gap-2">
+                <div className="flex flex-row items-end justify-between gap-2">
+                  <div>
+                    <CardTitle className="text-xl font-bold">
+                      {goal.title}
+                    </CardTitle>
+                    {goal.progress === 0 ? (
+                      <Badge className="text-sm" variant="secondary">
+                        Not started
+                      </Badge>
+                    ) : (
+                      <Badge className="text-sm" variant="outline">
+                        In progress
+                      </Badge>
+                    )}
+                  </div>
 
-                <DeleteButton goal={goal} />
-              </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {goal.description}
-              </p>
-              <div className="flex items-center gap-4 mt-2">
-                <div className="flex items-center gap-2">
-                  <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Started on {new Date(goal.createdAt).toDateString()}
-                  </span>
+                  <DeleteButton goal={goal} />
                 </div>
-                <div className="flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Deadline: {new Date(goal.endDate).toDateString()}
-                  </span>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {goal.description}
+                </p>
+                <div className="flex items-center gap-4 mt-2">
+                  <div className="flex items-center gap-2">
+                    <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Started on {new Date(goal.createdAt).toDateString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Deadline: {new Date(goal.endDate).toDateString()}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-4 mt-2">
-                <Button
-                  variant="outline"
-                  className="flex items-center justify-center"
-                  onClick={() => {
-                    r.mutate.updateGoalProgress(goal.id);
-                    // Next tick will be 100
-                    if (goal.progress === 99) {
-                      showConfetti();
-                    }
-                  }}
-                >
-                  <Plus className="h-3 w-3 mr-2" />
-                  Mark progress
-                </Button>
-                {/* <Button variant="outline"> */}
-                {/*   <ChevronDownIcon className="h-3 w-3 mr-2" /> */}
-                {/*   Decrease */}
-                {/* </Button> */}
-              </div>
-              <div className="w-full mt-2">
-                <Progress value={goal.progress} />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="flex items-center gap-4 mt-2">
+                  <Button
+                    variant="outline"
+                    className="flex items-center justify-center"
+                    onClick={() => {
+                      r.mutate.updateGoalProgress(goal.id);
+                      // Next tick will be 100
+                      if (goal.progress === 99) {
+                        showConfetti();
+                      }
+                    }}
+                  >
+                    <Plus className="h-3 w-3 mr-2" />
+                    Mark progress
+                  </Button>
+                  {/* <Button variant="outline"> */}
+                  {/*   <ChevronDownIcon className="h-3 w-3 mr-2" /> */}
+                  {/*   Decrease */}
+                  {/* </Button> */}
+                </div>
+                <div className="w-full mt-2">
+                  <Progress value={goal.progress} />
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
 
         <Separator className="mt-6 mb-2" />
 
         <h2 className="text-xl font-bold text-primary">Completed Goals</h2>
 
-        {completedGoals.map((goal) => (
-          <Card key={goal.id}>
-            <CardContent className="flex flex-col gap-2">
-              <div className="flex flex-row items-end justify-between gap-2">
-                <div>
-                  <CardTitle className="text-xl font-bold">
-                    {goal.title}
-                  </CardTitle>
-                  {goal.completedAt && (
-                    <Badge className="text-sm" variant="default">
-                      Completed on {new Date(goal.completedAt).toDateString()}
-                    </Badge>
-                  )}
-                </div>
+        {completedGoals.length === 0 ? (
+          <h4 className="text-md">You haven't completed any goals yet!</h4>
+        ) : (
+          completedGoals.map((goal) => (
+            <Card key={goal.id}>
+              <CardContent className="flex flex-col gap-2">
+                <div className="flex flex-row items-end justify-between gap-2">
+                  <div>
+                    <CardTitle className="text-xl font-bold">
+                      {goal.title}
+                    </CardTitle>
+                    {goal.completedAt && (
+                      <Badge className="text-sm" variant="default">
+                        Completed on {new Date(goal.completedAt).toDateString()}
+                      </Badge>
+                    )}
+                  </div>
 
-                <DeleteButton goal={goal} />
-              </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {goal.description}
-              </p>
-              <div className="flex items-center gap-4 mt-2">
-                <div className="flex items-center gap-2">
-                  <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Started on {new Date(goal.createdAt).toDateString()}
-                  </span>
+                  <DeleteButton goal={goal} />
                 </div>
-                <div className="flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Deadline: {new Date(goal.endDate).toDateString()}
-                  </span>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {goal.description}
+                </p>
+                <div className="flex items-center gap-4 mt-2">
+                  <div className="flex items-center gap-2">
+                    <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Started on {new Date(goal.createdAt).toDateString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Deadline: {new Date(goal.endDate).toDateString()}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="w-full mt-2">
-                <Progress value={100} />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="w-full mt-2">
+                  <Progress value={100} />
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );
