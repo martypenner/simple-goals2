@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "concurrently --kill-others 'reflect dev --silence-startup-message' 'VITE_REFLECT_URL=http://127.0.0.1:8080/ vite'",
     "build": "tsc && vite build",
-    "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
+    "deploy": "reflect publish --app goals",
+    "preview": "pnpm run build && wrangler pages dev ./dist",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -36,7 +37,9 @@
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.4",
-    "vite": "^5.2.8"
+    "vite": "^5.2.8",
+    "vite-tsconfig-paths": "^4.3.2",
+    "wrangler": "^3.49.0"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": "eslint --cache --fix",
