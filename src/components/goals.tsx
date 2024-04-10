@@ -18,7 +18,7 @@ export function Goals() {
   const [showCreate, setShowCreate] = React.useState(false);
 
   return (
-    <div className="grid gap-4 w-full max-w-3xl p-4 rounded-lg border border-gray-200 shadow-lg md:gap-8 md:p-10">
+    <div className="mx-auto mt-12 grid gap-4 w-full max-w-3xl p-4 rounded-lg border border-gray-200 shadow-lg md:gap-8 md:p-10">
       <h1 className="text-3xl font-bold flex flex-row items-center justify-between">
         My Goals
         <Button variant="outline" onClick={() => setShowCreate(!showCreate)}>
@@ -66,7 +66,7 @@ export function Goals() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {goal.description}
                 </p>
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-4 mt-2 flex-wrap">
                   <div className="flex items-center gap-2">
                     <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -135,7 +135,7 @@ export function Goals() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {goal.description}
                 </p>
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-4 mt-2 flex-wrap">
                   <div className="flex items-center gap-2">
                     <CalendarCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     <span className="text-sm text-gray-500 dark:text-gray-400">

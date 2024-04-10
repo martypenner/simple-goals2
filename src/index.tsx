@@ -10,7 +10,7 @@ function App() {
   const initialized = useInitialized(r);
 
   if (!initialized) {
-    return <div>Setting things up...</div>;
+    return <div className="mt-48 mx-auto">Setting things up...</div>;
   }
 
   return <Goals />;
