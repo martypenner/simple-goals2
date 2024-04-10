@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -10,12 +10,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>();
+const plusOneYear = new Date();
+plusOneYear.setFullYear(plusOneYear.getFullYear() + 1);
+
+export function DatePicker(props: {
+  onValueChange?: (value?: number) => void;
+}) {
+  const [date, setDate] = React.useState<Date | undefined>(plusOneYear);
 
   return (
     <Popover>
+      <input type="hidden" name="deadline" value={date?.getTime()} />
+
       <PopoverTrigger asChild>
         <Button
           variant={'outline'}
@@ -28,13 +42,36 @@ export function DatePickerDemo() {
           {date ? format(date, 'PPP') : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
+      <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
+        <Select
+          defaultValue="365"
+          onValueChange={(value) => {
+            const date = addDays(new Date(), parseInt(value, 10));
+            setDate(date);
+            props.onValueChange?.(date?.getTime());
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent position="popper">
+            <SelectItem value="7">In a week</SelectItem>
+            <SelectItem value="30">In a month</SelectItem>
+            <SelectItem value="120">In 3 months</SelectItem>
+            <SelectItem value="180">In 6 months</SelectItem>
+            <SelectItem value="365">In a year</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="rounded-md border">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => {
+              setDate(date);
+              props.onValueChange?.(date?.getTime());
+            }}
+          />
+        </div>
       </PopoverContent>
     </Popover>
   );

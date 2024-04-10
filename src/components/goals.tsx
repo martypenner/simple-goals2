@@ -5,17 +5,38 @@ import { Progress } from '@/components/ui/progress';
 import { r } from '@/reflect';
 import { useCompletedGoals, useUnfinishedGoals } from '@/subscriptions';
 import confetti from 'canvas-confetti';
-import { Plus } from 'lucide-react';
-import { SVGAttributes } from 'react';
+import { Minus, Plus } from 'lucide-react';
+import React, { SVGAttributes } from 'react';
+import { SetGoal } from './set-goal';
 import { Separator } from './ui/separator';
 
 export function Goals() {
   const unfinishedGoals = useUnfinishedGoals(r);
   const completedGoals = useCompletedGoals(r);
 
+  const [showCreate, setShowCreate] = React.useState(false);
+
   return (
     <div className="grid gap-4 w-full max-w-3xl p-4 rounded-lg border border-gray-200 shadow-lg md:gap-8 md:p-10">
-      <h1 className="text-3xl font-bold">My Goals</h1>
+      <h1 className="text-3xl font-bold flex flex-row items-center justify-between">
+        My Goals
+        <Button variant="outline" onClick={() => setShowCreate(!showCreate)}>
+          {showCreate ? (
+            <>
+              <span className="sr-only">Hide form</span>
+              <Minus className="h-3 w-3" />
+            </>
+          ) : (
+            <>
+              <span className="sr-only">Show form</span>
+              <Plus className="h-3 w-3" />
+            </>
+          )}
+        </Button>
+      </h1>
+
+      {showCreate && <SetGoal onCreateGoal={() => setShowCreate(false)} />}
+
       <div className="grid gap-4">
         {unfinishedGoals.map((goal) => (
           <Card key={goal.id}>
