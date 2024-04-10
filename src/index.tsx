@@ -4,8 +4,15 @@ import ReactDOM from 'react-dom/client';
 import { r } from './reflect';
 
 import './globals.css';
+import { useInitialized } from './subscriptions';
 
 function App() {
+  const initialized = useInitialized(r);
+
+  if (!initialized) {
+    return <div>Setting things up...</div>;
+  }
+
   return <Goals />;
 }
 

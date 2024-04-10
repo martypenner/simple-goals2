@@ -11,8 +11,12 @@
 
 import type { Reflect } from '@rocicorp/reflect/client';
 import { useSubscribe } from '@rocicorp/reflect/react';
-import { type Goal, listGoals } from './client-state';
+import { get, listGoals, type Goal } from './client-state';
 import type { Mutators } from './mutators';
+
+export function useInitialized(r: Reflect<Mutators>): boolean {
+  return useSubscribe(r, async (tx) => (await get(tx, 'init')) != null, false);
+}
 
 export function useUnfinishedGoals(r: Reflect<Mutators>): Goal[] {
   return useSubscribe(

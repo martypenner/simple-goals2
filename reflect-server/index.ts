@@ -1,3 +1,4 @@
+import { init, initGoal } from '@/client-state';
 import { WriteTransaction } from '@rocicorp/reflect';
 import type {
   AuthHandler,
@@ -25,7 +26,8 @@ const authHandler: AuthHandler = (auth: string, _roomID: string) => {
 
 const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
   async (tx: WriteTransaction) => {
-    if (!(await tx.isEmpty())) return;
+    const isInitialized = !(await init(tx, { id: 'init' }));
+    if (isInitialized) return;
 
     if (process.env.NODE_ENV === 'development') {
       const id = nanoid();
@@ -40,9 +42,8 @@ const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
       });
     }
 
-    const id = nanoid();
-    await tx.set(`goal/${id}`, {
-      id: id,
+    await initGoal(tx, {
+      id: 'demo',
       progress: 100,
       title: 'Be awesome',
       description: `Finishing goals rules!`,

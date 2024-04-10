@@ -10,9 +10,21 @@ export type Goal = Entity & {
   progress: number;
 };
 
-export { mustGetGoal, listGoals, removeGoal, addGoal, updateGoal };
+export {
+  init,
+  get,
+  initGoal,
+  mustGetGoal,
+  listGoals,
+  removeGoal,
+  addGoal,
+  updateGoal,
+};
+
+const { init, get } = generate<Entity>('init');
 
 const {
+  init: initGoal,
   mustGet: mustGetGoal,
   list: listGoals,
   delete: removeGoal,
