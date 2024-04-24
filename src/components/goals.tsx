@@ -45,8 +45,8 @@ export function Goals() {
           unfinishedGoals.map((goal) => (
             <Card key={goal.id}>
               <CardContent className="flex flex-col gap-2">
-                <div className="flex flex-row items-end justify-between gap-2">
-                  <div>
+                <div className="flex flex-row items-end justify-between gap-4">
+                  <div className="flex flex-row items-end justify-between gap-4">
                     <CardTitle className="text-xl font-bold">
                       {goal.title}
                     </CardTitle>
@@ -118,8 +118,8 @@ export function Goals() {
           completedGoals.map((goal) => (
             <Card key={goal.id}>
               <CardContent className="flex flex-col gap-2">
-                <div className="flex flex-row items-end justify-between gap-2">
-                  <div>
+                <div className="flex flex-row items-end justify-between gap-4">
+                  <div className="flex flex-row items-end justify-between gap-4">
                     <CardTitle className="text-xl font-bold">
                       {goal.title}
                     </CardTitle>
