@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "deploy": "reflect publish --app goals",
     "preview": "pnpm run build && wrangler pages dev ./dist",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@rocicorp/rails": "^0.10.0",
