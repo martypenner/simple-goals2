@@ -20,7 +20,7 @@ export function Goals() {
   return (
     <div className="mx-auto mt-12 grid gap-4 w-full max-w-3xl p-4 rounded-lg border border-gray-200 shadow-lg md:gap-8 md:p-10">
       <h1 className="text-3xl font-bold flex flex-row items-center justify-between">
-        My Goals
+        My goals
         <Button variant="outline" onClick={() => setShowCreate(!showCreate)}>
           {showCreate ? (
             <>
@@ -110,7 +110,7 @@ export function Goals() {
 
         <Separator className="mt-6 mb-2" />
 
-        <h2 className="text-xl font-bold text-primary">Completed Goals</h2>
+        <h2 className="text-xl font-bold text-primary">Completed goals</h2>
 
         {completedGoals.length === 0 ? (
           <h4 className="text-md">You haven't completed any goals yet!</h4>
