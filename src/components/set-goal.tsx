@@ -25,6 +25,10 @@ export function SetGoal({ onCreateGoal }: { onCreateGoal: () => void }) {
       const deadline = Number(
         data.get('deadline')?.toString() ?? `${Date.now()}`,
       );
+      const desiredCount = Math.max(
+        Number(data.get('desiredCount')?.toString() ?? `${Date.now()}`),
+        1,
+      );
       r.mutate.addGoal({
         id: nanoid(),
         title,
@@ -33,6 +37,7 @@ export function SetGoal({ onCreateGoal }: { onCreateGoal: () => void }) {
         createdAt: Date.now(),
         updatedAt: Date.now(),
         progress: 0,
+        desiredCount,
       });
       onCreateGoal();
     },
@@ -62,6 +67,10 @@ export function SetGoal({ onCreateGoal }: { onCreateGoal: () => void }) {
           <div className="space-y-2 flex flex-col">
             <Label>Deadline</Label>
             <DatePicker />
+          </div>
+          <div className="space-y-2 flex flex-col">
+            <Label>How many times do you want to do this thing?</Label>
+            <Input id="desiredCount" name="desiredCount" required />
           </div>
         </CardContent>
         <CardFooter>

@@ -35,10 +35,11 @@ export type Mutators = typeof mutators;
 
 export async function updateGoalProgress(tx: WriteTransaction, id: Goal['id']) {
   const goal = await mustGetGoal(tx, id);
-  const progress = Math.min(goal.progress + 1, 100);
+  const progress = Math.min(goal.progress + 1, goal.desiredCount ?? 100);
   return await updateGoal(tx, {
     id,
     progress,
-    completedAt: progress === 100 ? Date.now() : undefined,
+    completedAt:
+      progress === (goal.desiredCount ?? 100) ? Date.now() : undefined,
   });
 }

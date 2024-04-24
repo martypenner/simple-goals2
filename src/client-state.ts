@@ -7,7 +7,14 @@ export type Goal = Entity & {
   updatedAt: number;
   completedAt?: number;
   endDate: number;
+  /** Track the number of times this item / goal has been done. */
   progress: number;
+  /**
+   * Track the total number of times this item / goal wants to be done.
+   * Dividing the progress by this number is what shows up in the progress bar.
+   * This is optional because it wasn't there from the beginning.
+   */
+  desiredCount?: number;
 };
 
 export {

@@ -34,6 +34,7 @@ const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
       await tx.set(`goal/${id}`, {
         id: id,
         progress: 90,
+        desiredCount: 100,
         title: 'Write a poem',
         description: `I've always had a story to tell, and now I'm finally putting it on paper.`,
         createdAt: new Date('March 23, 2024').valueOf(),
@@ -44,7 +45,8 @@ const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
 
     await initGoal(tx, {
       id: 'demo',
-      progress: 100,
+      progress: 40,
+      desiredCount: 40,
       title: 'Be awesome',
       description: `Finishing goals rules!`,
       createdAt: new Date('March 23, 2024').valueOf(),

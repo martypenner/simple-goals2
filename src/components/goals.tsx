@@ -86,8 +86,8 @@ export function Goals() {
                     className="flex items-center justify-center"
                     onClick={() => {
                       r.mutate.updateGoalProgress(goal.id);
-                      // Next tick will be 100
-                      if (goal.progress === 99) {
+                      // Next tick will be completed
+                      if (goal.progress === (goal.desiredCount ?? 100) - 1) {
                         showConfetti();
                       }
                     }}
@@ -101,7 +101,9 @@ export function Goals() {
                   {/* </Button> */}
                 </div>
                 <div className="w-full mt-2">
-                  <Progress value={goal.progress} />
+                  <Progress
+                    value={(goal.progress / (goal.desiredCount ?? 100)) * 100}
+                  />
                 </div>
               </CardContent>
             </Card>
