@@ -9,7 +9,8 @@
     "**/*.ts",
     "../src/subscriptions.ts",
     "../src/client-state.ts",
-    "../src/mutators.ts"
+    "../src/mutators.ts",
+    "../src/lib"
   ],
   "extends": "../tsconfig.json"
 }
