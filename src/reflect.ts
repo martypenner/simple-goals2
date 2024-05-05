@@ -11,6 +11,7 @@ const authCookie = document.cookie
   .split('; ')
   .map((entry) => entry.split('='))
   .find(([key]) => key === 'CF_Authorization')?.[1];
+console.log(document.cookie);
 if (import.meta.env.PROD && authCookie == null) {
   // We may be logged in, but the cookie may have been deleted while we're sitting on the page.
   // Refresh to re-authenticate.
