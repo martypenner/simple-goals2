@@ -1,5 +1,4 @@
 import { Reflect } from '@rocicorp/reflect/client';
-import * as Sentry from '@sentry/react';
 import { decodeJWTPayload, sanitizeRoomID } from './lib/utils';
 import { mutators } from './mutators';
 
@@ -12,11 +11,7 @@ const authCookie = document.cookie
   .split('; ')
   .map((entry) => entry.split('='))
   .find(([key]) => key === 'CF_Authorization')?.[1];
-console.info(`Cookie: ${authCookie}`);
-Sentry.captureMessage(`Cookie: ${authCookie}`, 'info');
 if (import.meta.env.PROD && authCookie == null) {
-  console.info(`Cookie is null in prod.`);
-  Sentry.captureMessage(`Cookie is null in prod.`, 'warning');
   window.location.assign('/cdn-cgi/access/logout');
 }
 
