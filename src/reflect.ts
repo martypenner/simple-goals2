@@ -17,7 +17,7 @@ Sentry.captureMessage(`Cookie: ${authCookie}`, 'info');
 if (import.meta.env.PROD && authCookie == null) {
   console.info(`Cookie is null in prod.`);
   Sentry.captureMessage(`Cookie is null in prod.`, 'warning');
-  window.location.assign('/cdn-cgi/access/logout');
+  // window.location.assign('/cdn-cgi/access/logout');
 }
 
 const payload = import.meta.env.PROD
