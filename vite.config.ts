@@ -10,7 +10,7 @@ export default defineConfig({
     tsconfigPaths(),
     sentryVitePlugin({
       org: 'self-employed-3t',
-      project: 'javascript',
+      project: 'simple-goals',
     }),
   ],
   build: {
