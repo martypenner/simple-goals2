@@ -11,7 +11,6 @@ const authCookie = document.cookie
   .split('; ')
   .map((entry) => entry.split('='))
   .find(([key]) => key === 'CF_Authorization')?.[1];
-throw new Error(`Cookie: ${authCookie}`);
 if (import.meta.env.PROD && authCookie == null) {
   window.location.assign('/cdn-cgi/access/logout');
 }
