@@ -15,9 +15,7 @@ const authHandler: AuthHandler = (auth: string, requestedRoomID: string) => {
       userID: auth,
     };
   }
-  return {
-    userID: 'testing',
-  };
+  return null;
 };
 
 const roomStartHandler: ReflectServerOptions<Mutators>['roomStartHandler'] =
