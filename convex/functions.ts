@@ -6,7 +6,12 @@ import { mutation, query } from './_generated/server';
 export const listUnfinishedGoals = query({
   args: {},
   handler: async (ctx) => {
-    const goals = await ctx.db.query('goals').order('desc').collect();
+    const identity = await ctx.auth.getUserIdentity();
+    const goals = await ctx.db
+      .query('goals')
+      .filter((q) => q.eq(q.field('userId'), identity?.subject))
+      .order('desc')
+      .collect();
     return goals
       .filter((goal) => goal.completedAt == null)
       .map((goal) => ({
@@ -23,7 +28,11 @@ export const listUnfinishedGoals = query({
 export const listCompletedGoals = query({
   args: {},
   handler: async (ctx) => {
-    const goals = await ctx.db.query('goals').collect();
+    const identity = await ctx.auth.getUserIdentity();
+    const goals = await ctx.db
+      .query('goals')
+      .filter((q) => q.eq(q.field('userId'), identity?.subject))
+      .collect();
     return goals
       .sort(
         (a, b) =>
@@ -43,8 +52,15 @@ export const listCompletedGoals = query({
 });
 
 export const addGoal = mutation({
-  handler: async (ctx, args: WithoutSystemFields<Doc<'goals'>>) => {
-    await ctx.db.insert('goals', args);
+  handler: async (
+    ctx,
+    args: Omit<WithoutSystemFields<Doc<'goals'>>, 'userId'>,
+  ) => {
+    const identity = await ctx.auth.getUserIdentity();
+    await ctx.db.insert('goals', {
+      ...args,
+      userId: identity!.subject,
+    });
   },
 });
 
@@ -54,6 +70,17 @@ export const removeGoal = mutation({
   },
 
   handler: async (ctx, { id }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    const goal = await ctx.db.get(id);
+    if (goal != null && goal.userId !== identity?.subject) {
+      console.error(
+        'Unauthorized attempt to delete goal',
+        id,
+        identity?.subject,
+      );
+      return;
+    }
+
     return await ctx.db.delete(id);
   },
 });
@@ -66,6 +93,15 @@ export const updateGoalProgress = mutation({
   handler: async (ctx, { id }) => {
     const goal = await ctx.db.get(id);
     if (!goal) return;
+    const identity = await ctx.auth.getUserIdentity();
+    if (goal.userId !== identity?.subject) {
+      console.error(
+        'Unauthorized attempt to update goal',
+        id,
+        identity?.subject,
+      );
+      return;
+    }
 
     const progress = Math.min(
       Number(goal.progress) + 1,

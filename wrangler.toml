@@ -4,6 +4,7 @@ pages_build_output_dir = "./dist"
 
 [vars]
 VITE_CONVEX_URL = "https://accomplished-loris-266.convex.cloud"
+VITE_CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsucGVubmVyLm1lJA"
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

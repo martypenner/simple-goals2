@@ -3,6 +3,7 @@ import { v } from 'convex/values';
 
 export const goalsSchema = {
   title: v.string(),
+  userId: v.string(),
   description: v.string(),
   updatedAt: v.int64(),
   completedAt: v.optional(v.int64()),
