@@ -61,11 +61,17 @@ export function Goals() {
                           {goal.title}
                         </CardTitle>
                         {goal.progress === 0 ? (
-                          <Badge className="text-sm" variant="secondary">
+                          <Badge
+                            className="text-sm text-nowrap"
+                            variant="secondary"
+                          >
                             Not started
                           </Badge>
                         ) : (
-                          <Badge className="text-sm" variant="outline">
+                          <Badge
+                            className="text-sm text-nowrap"
+                            variant="outline"
+                          >
                             In progress
                           </Badge>
                         )}
@@ -159,7 +165,10 @@ export function Goals() {
                           {goal.title}
                         </CardTitle>
                         {goal.completedAt != null && (
-                          <Badge className="text-sm" variant="default">
+                          <Badge
+                            className="text-sm text-nowrap"
+                            variant="default"
+                          >
                             Completed on{' '}
                             {new Date(goal.completedAt).toDateString()}
                           </Badge>
