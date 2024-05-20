@@ -3,7 +3,7 @@ compatibility_date = "2024-04-10"
 pages_build_output_dir = "./dist"
 
 [vars]
-VITE_REFLECT_URL = "https://goals-martypenner.reflect-server.net"
+VITE_CONVEX_URL = "https://accomplished-loris-266.convex.cloud"
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_REFLECT_URL: string;
+  readonly VITE_CONVEX_URL: string;
   // more env variables...
 }
 

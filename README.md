@@ -1,21 +1,14 @@
-# reflect-scaffold-example
+# Convex + TypeScript + ESLint + Vite + React + Tailwind + shadcn/ui
 
-This project will set you up with a very basic application that you can immediately publish and see working utilizing reflect.
+This template provides a minimal setup to get Convex working, with TypeScript,
+ESLint and React using [Vite](https://vitejs.dev/).
 
-## To Run
+Start by editing `convex/myFunctions.ts` and interact with your React app.
 
-```bash
-npm run watch
+See Convex docs at https://docs.convex.dev/home
+
+## Setting up
+
 ```
-
-## To Publish
-
-```bash
-# Publish the Reflect server
-npx reflect publish --app=my-app
-
-# Publish the UI somewhere, i.e. Vercel.
-# You will need to set the environment variable VITE_REFLECT_URL to whatever
-# `npx reflect publish` output above.
-npx vercel
+npm create convex@latest -t react-vite-shadcn
 ```

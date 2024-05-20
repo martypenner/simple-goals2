@@ -11,37 +11,41 @@ import { DatePicker } from '@/components/ui/datepicker';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { r } from '@/reflect';
-import { nanoid } from 'nanoid';
+import { api } from 'convex/_generated/api';
+import { useMutation } from 'convex/react';
 import React from 'react';
 
 export function SetGoal({ onCreateGoal }: { onCreateGoal: () => void }) {
+  const addGoal = useMutation(api.functions.addGoal);
+
   const onSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
       const title = data.get('title')?.toString() ?? '';
       const description = data.get('description')?.toString() ?? '';
-      const deadline = Number(
+      const deadline = BigInt(
         data.get('deadline')?.toString() ?? `${Date.now()}`,
       );
-      const desiredCount = Math.max(
-        Number(data.get('desiredCount')?.toString() ?? `${Date.now()}`),
-        1,
+      const desiredCount = BigInt(
+        Math.max(
+          Number(data.get('desiredCount')?.toString() ?? `${Date.now()}`),
+          1,
+        ),
       );
-      r.mutate.addGoal({
-        id: nanoid(),
+      addGoal({
         title,
         description,
         endDate: deadline,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        progress: 0,
+        updatedAt: BigInt(Date.now()),
+        progress: BigInt(0),
         desiredCount,
-      });
+      })
+        .then(() => {})
+        .catch(() => {});
       onCreateGoal();
     },
-    [onCreateGoal],
+    [onCreateGoal, addGoal],
   );
 
   return (
