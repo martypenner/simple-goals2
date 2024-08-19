@@ -1,4 +1,6 @@
 import { type MetaFunction } from '@remix-run/node'
+import { useQuery } from '@triplit/react'
+import React, { useState } from 'react'
 import {
 	Tooltip,
 	TooltipContent,
@@ -6,7 +8,8 @@ import {
 	TooltipTrigger,
 } from '#app/components/ui/tooltip.tsx'
 import { cn } from '#app/utils/misc.tsx'
-import { logos } from './logos/logos.ts'
+import { triplit } from '#triplit/client'
+import { logos } from './logos/logos'
 
 export const meta: MetaFunction = () => [{ title: 'Epic Notes' }]
 
@@ -96,6 +99,81 @@ export default function Index() {
 					</TooltipProvider>
 				</ul>
 			</div>
+
+			<Stuff />
 		</main>
+	)
+}
+
+function useTodos() {
+	const todosQuery = triplit.query('todos').order('created_at', 'DESC')
+	const { results: todos, error, fetching } = useQuery(triplit, todosQuery)
+	return { todos, error, fetching }
+}
+
+function Stuff() {
+	const [text, setText] = useState('')
+	const { todos, fetching } = useTodos()
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		await triplit.insert('todos', { text })
+		setText('')
+	}
+
+	return (
+		<div className="main-container">
+			<div className="app-container">
+				<h1>Todos</h1>
+				<form onSubmit={handleSubmit}>
+					<input
+						type="text"
+						placeholder="What needs to be done?"
+						className="todo-input"
+						value={text}
+						onChange={(e) => setText(e.target.value)}
+					/>
+					<button className="btn" type="submit" disabled={!text}>
+						Add Todo
+					</button>
+				</form>
+				{fetching && <p>Loading...</p>}
+				{todos && (
+					<div className="todos-container">
+						{Array.from(todos).map(([id, todo]) => (
+							<Todo key={id} todo={todo} />
+						))}
+					</div>
+				)}
+			</div>
+		</div>
+	)
+}
+
+function Todo({ todo }: { todo: Todo }) {
+	return (
+		<div className="todo">
+			<input
+				type="checkbox"
+				checked={todo.completed}
+				onChange={async () =>
+					// Update the todo's completed status
+					// `triplit.update` is an async function that takes the entity type
+					//  the entity ID, and a callback function that updates the entity
+					await triplit.update('todos', todo.id, async (entity) => {
+						entity.completed = !todo.completed
+					})
+				}
+			/>
+			{todo.text}
+			<button
+				className="x-button"
+				onClick={async () => {
+					// Delete the todo
+					await triplit.delete('todos', todo.id)
+				}}
+			>
+				❌
+			</button>
+		</div>
 	)
 }

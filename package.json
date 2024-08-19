@@ -5,6 +5,7 @@
   "type": "module",
   "imports": {
     "#app/*": "./app/*",
+    "#triplit/*": "./triplit/*",
     "#tests/*": "./tests/*"
   },
   "scripts": {
@@ -15,10 +16,11 @@
     "predev": "npm run build:icons --silent",
     "dev": "run-p dev:*",
     "dev:remix": "node ./server/dev-server.js",
-    "dev:triplit": "npx triplit dev",
+    "dev:triplit": "triplit dev --storage=sqlite",
     "prisma:studio": "prisma studio",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "TODO:": "integrate triplit here instead",
     "setup": "npm run build && prisma generate && prisma migrate deploy && prisma db seed && playwright install",
     "start": "cross-env NODE_ENV=production node .",
     "start:mocks": "cross-env NODE_ENV=production MOCKS=true tsx .",
@@ -64,6 +66,7 @@
     "@sentry/profiling-node": "^8.18.0",
     "@sentry/remix": "^8.18.0",
     "@triplit/client": "^0.4.6",
+    "@triplit/db": "^0.3.69",
     "@triplit/react": "^0.3.95",
     "address": "^2.0.3",
     "bcryptjs": "^2.4.3",
