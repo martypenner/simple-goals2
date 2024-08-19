@@ -1,4 +1,9 @@
-import { type ClientSchema, type Entity, Schema as S } from '@triplit/client'
+import {
+	type ClientSchema,
+	type Entity,
+	type Roles,
+	Schema as S,
+} from '@triplit/client'
 
 /**
  * Define your schema here. After:
@@ -26,8 +31,57 @@ export const schema = {
 			 */
 			desiredCount: S.Number({ nullable: false }),
 		}),
+		permissions: {
+			// Allow all
+			admin: {
+				read: {
+					filter: [true],
+				},
+				insert: {
+					filter: [true],
+				},
+				update: {
+					filter: [true],
+				},
+				delete: {
+					filter: [true],
+				},
+			},
+			// Allow only the author to update their own goals
+			user: {
+				read: {
+					filter: [['authorId', '=', '$role.userId']],
+				},
+				insert: {
+					filter: [['authorId', '=', '$role.userId']],
+				},
+				update: {
+					filter: [['authorId', '=', '$role.userId']],
+				},
+				postUpdate: {
+					filter: [['authorId', '=', '$role.userId']],
+				},
+				delete: {
+					filter: [['authorId', '=', '$role.userId']],
+				},
+			},
+		},
 	},
 } satisfies ClientSchema
 
 // Use the `Entity` type to extract clean types for your collections
 export type Goal = Entity<typeof schema, 'goals'>
+
+export const roles: Roles = {
+	admin: {
+		match: {
+			type: 'admin',
+		},
+	},
+	user: {
+		match: {
+			type: 'user',
+			uid: '$userId',
+		},
+	},
+}
